@@ -20,3 +20,7 @@ management:
     health:
       probes:
         enabled: true
+adapter:
+  restconsumer:
+    timeout: 5000
+    url: "https://run.mocky.io"

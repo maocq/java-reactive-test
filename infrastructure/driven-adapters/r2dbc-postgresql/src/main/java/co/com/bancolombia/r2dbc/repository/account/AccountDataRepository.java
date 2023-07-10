@@ -8,7 +8,6 @@ import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Mono;
 
-import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -21,13 +20,6 @@ public class AccountDataRepository implements AccountRepository {
     public Mono<Account> findById(long id) {
         return repository.findById(id)
                 .map(this::toEntity);
-    }
-
-    @Override
-    public Mono<Optional<Account>> findByIdOptional(long id) {
-        return findById(id)
-                .map(Optional::ofNullable)
-                .switchIfEmpty(Mono.just(Optional.empty()));
     }
 
 

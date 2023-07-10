@@ -18,9 +18,9 @@ public class RegisterAccountUseCase {
     private final AccountRepository accountRepository;
 
     public Mono<Account> register(long id, String name, String statusId) {
-        return accountRepository.findByIdOptional(id)
-                .flatMap(optional -> optional.isPresent() ?
-                        Mono.error(() -> new BusinessException(ACCOUNT_VALIDATION_ERROR)) : Mono.just(id))
+        return accountRepository.findById(id)
+                .flatMap(account -> Mono.<Long>error(() -> new BusinessException(ACCOUNT_VALIDATION_ERROR)))
+                .switchIfEmpty(Mono.just(id))
                 .flatMap(idAccount -> statusAccountService.getStatus(statusId))
                 .map(status -> Account.newAccount(new Random().nextLong(), name, status.getStatus()));
     }
